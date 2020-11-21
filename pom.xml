@@ -9,10 +9,12 @@
 		<version>2.3.5.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>pe.com.smart.util</groupId>
+
+	<groupId>com.github.Lucho-Master</groupId>
 	<artifactId>Utilitarios</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Utilitarios</name>
+	<url>https://github.com/Lucho-Master/util-smart</url>
 	<description>Utilitario smart reasons</description>
 
 	<properties>
