@@ -17,6 +17,28 @@
 	<url>https://github.com/Lucho-Master/util-smart</url>
 	<description>Utilitario smart reasons</description>
 
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Luis Amat</name>
+			<email>lamatcalderon@gmail.com</email>
+			<organization>com.github.Lucho-Master</organization>
+			<organizationUrl>https://github.com/Lucho-Master/util-smart</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git://github.com/Lucho-Master/util-smart.git</connection>
+		<developerConnection>scm:git:ssh://github.com/Lucho-Master/util-smart.git</developerConnection>
+		<url>https://github.com/Lucho-Master/util-smart</url>
+	</scm>
+
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
