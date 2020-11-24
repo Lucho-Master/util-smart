@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import pe.com.smart.util.commons.UtilGson;
 import pe.com.smart.util.commons.UtilResponse;
 import pe.com.smart.util.constants.UtilConstantes;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@Component
 public class AuthenticationFilterApps extends BasicAuthenticationFilter  {
     private String sHeaderAuthorizationKey ;
     private String sTokenBearerPreix;
@@ -69,11 +71,21 @@ public class AuthenticationFilterApps extends BasicAuthenticationFilter  {
             }
 
             UsuarioCredentialsApps userInfo = BasicAuthentiFilterApps.getUserDetailsFromToken(token[1]);
-            if(userInfo.Servicios == null || userInfo.Servicios.size() == 0) {
+
+            if(userInfo != null && (userInfo.Servicios == null || userInfo.Servicios.size() == 0)) {
                 userInfo.Servicios = new ArrayList<>();
                 userInfo.Servicios.add(0);
             }
-            if(userInfo == null || (userInfo.Servicios == null || userInfo.Servicios.size() == 0)) {
+
+            if(userInfo == null) {
+                UtilResponse.settingHttpServletResponseWithBody(
+                        UtilGson.objectToJson(new ResponseJwt(UtilConstantes.GENERAL_TOKEN_INVALIDO,
+                                UtilConstantes.ERROR_PROCESS_TOKEN,
+                                "")),
+                        HttpServletResponse.SC_UNAUTHORIZED,
+                        res);
+                return;
+            } else if(userInfo.Servicios == null || userInfo.Servicios.size() == 0) {
                 UtilResponse.settingHttpServletResponseWithBody(
                         UtilGson.objectToJson(new ResponseJwt(UtilConstantes.GENERICO_GENERAL,
                                 UtilConstantes.NO_EXISTS_SERVICES,
@@ -82,13 +94,14 @@ public class AuthenticationFilterApps extends BasicAuthenticationFilter  {
                         res);
                 return;
             }
+
             try {
                 if(userInfo.TipoToken == UtilConstantes.TIPO_TOKEN_TOKEN_APP_MOVIL) {
                     BasicAuthentiFilterApps.validateToken(token[1], false);
                 } else {
                     BasicAuthentiFilterApps.validateToken(token[1], true);
                 }
-            }catch(Exception ex) {
+            } catch(Exception ex) {
                 String msg = null;
                 int idError = UtilConstantes.GENERAL_TOKEN_INVALIDO;
                 if(ex instanceof AlgorithmMismatchException) {

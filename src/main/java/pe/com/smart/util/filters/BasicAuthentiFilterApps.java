@@ -1,8 +1,5 @@
 package pe.com.smart.util.filters;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 import pe.com.smart.util.commons.UtilCollections;
@@ -13,14 +10,9 @@ import pe.com.smart.util.models.jwt.UsuarioDetailCustom;
 
 import javax.servlet.ServletException;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -44,6 +36,7 @@ public class BasicAuthentiFilterApps {
                     UtilJwt.deserialize(token, "scopes", UsuarioCredentialsApps.class);
         } catch (Exception e) {
             e.printStackTrace();
+            userInfo = null;
         }
         return userInfo;
     }
@@ -59,18 +52,6 @@ public class BasicAuthentiFilterApps {
     }
 
     public static void validateToken(String token, boolean validateExpiration) throws CertificateException {
-
-        byte encodedCert[] = Base64.getDecoder().decode(SelfSigned2048_SHA256_Public);
-        ByteArrayInputStream inputStream  =  new ByteArrayInputStream(encodedCert);
-
-        CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
-        X509Certificate cert = (X509Certificate)certFactory.generateCertificate(inputStream);
-        Algorithm algorithm = Algorithm.RSA256((RSAPublicKey)cert.getPublicKey(), null);
-        JWTVerifier verifier = validateExpiration ? JWT.require(algorithm)
-                .withIssuer(issuer)
-                .build() : JWT.require(algorithm)
-                .withIssuer(issuer).acceptExpiresAt(999999999)
-                .build();
-        verifier.verify(token);
+        UtilJwt.validate(token, validateExpiration, SelfSigned2048_SHA256_Public, issuer);
     }
 }

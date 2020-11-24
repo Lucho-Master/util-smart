@@ -26,8 +26,9 @@ public class UtilConstantes {
     //Mensajes genericos
     public static final String NO_HEADER_AUTHORIZATION = "Header Authorization es obligatorio";
     public static final String NO_EXISTS_SERVICES = "El usuario no tiene servicios asignados";
-    public static final String NO_START_WITH_PREFIX_BEARER = "El header Authorozation no empieza con el prefijo Bearer";
+    public static final String NO_START_WITH_PREFIX_BEARER = "El header Authorization no empieza con el prefijo Bearer";
     public static final String BAD_FORMAT_HEADER_AUTHORIZATION = "El Header Authorization no cumple con el formato requerido";
+    public static final String ERROR_PROCESS_TOKEN = "Error al procesar el token";
 
     //errores generales - 1
     public static int GENERICO_GENERAL = 5001000;
